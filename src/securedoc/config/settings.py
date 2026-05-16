@@ -13,10 +13,12 @@ from datetime import timedelta
 class BaseConfig:
     SECRET_KEY = os.getenv("SECRET_KEY", "securedoc-prototype-stable-key-123")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SQLALCHEMY_DATABASE_URI = os.getenv(
-        "DATABASE_URI",
-        "sqlite:///securedoc.db",
-    )
+    
+    # Use Vercel Postgres if available, fallback to SQLite
+    _db_uri = os.getenv("POSTGRES_URL", os.getenv("DATABASE_URI", "sqlite:///securedoc.db"))
+    if _db_uri.startswith("postgres://"):
+        _db_uri = _db_uri.replace("postgres://", "postgresql://", 1)
+    SQLALCHEMY_DATABASE_URI = _db_uri
     PERMANENT_SESSION_LIFETIME = timedelta(
         minutes=int(os.getenv("SESSION_TIMEOUT_MINUTES", "30"))
     )
