@@ -381,7 +381,7 @@ SecureDoc demonstrates:
 
 ## 15. Author & Contact
 
-**Team:** Mohid Umer
+**Team:** Mohid Umer  
 **Project:** Secure Software Development
 
 ---
