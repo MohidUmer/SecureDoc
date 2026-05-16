@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — SecureDoc{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>Your workspace</h1>
+  <p class="lede">Search, open, and manage documents you own or that others shared with you.</p>
+</div>
+
+<form method="get" action="{{ url_for('main.dashboard') }}" class="search-bar">
+  <input class="input" type="search" name="q" value="{{ query or '' }}" maxlength="200" placeholder="Search by title…" aria-label="Search documents">
+  <button type="submit" class="btn btn-secondary btn-sm">Search</button>
+</form>
+
+<div class="dash-columns">
+  <section class="card">
+    <h2>Owned by you</h2>
+    {% if owned_documents %}
+    <div class="doc-grid">
+      {% for d in owned_documents %}
+      <a class="doc-row doc-row-link" href="{{ url_for('documents.detail', document_id=d.id) }}">
+        <div>
+          <span class="title">{{ d.title }}</span>
+          <div class="doc-meta">{{ d.mime_type }}</div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="empty-hint">No documents yet. <a href="{{ url_for('documents.upload') }}">Upload your first file</a>.</p>
+    {% endif %}
+  </section>
+
+  <section class="card card-muted">
+    <h2>Shared with you</h2>
+    {% if shared_documents %}
+    <div class="doc-grid">
+      {% for d in shared_documents %}
+      <a class="doc-row doc-row-link" href="{{ url_for('documents.detail', document_id=d.id) }}">
+        <div>
+          <span class="title">{{ d.title }}</span>
+          <div class="doc-meta">{{ d.mime_type }}</div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="empty-hint">When someone shares a document with your username, it will appear here.</p>
+    {% endif %}
+  </section>
+</div>
+{% endblock %}

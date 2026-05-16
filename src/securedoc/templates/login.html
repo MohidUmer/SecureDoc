@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% import "macros/ui.html" as ui %}
+{% block title %}Login — SecureDoc{% endblock %}
+{% block body_class %}page-backdrop{% endblock %}
+{% block main_class %}main--backdrop main--backdrop-center{% endblock %}
+{% block flash_messages %}{% endblock %}
+{% block content %}
+{% include "partials/blur_backdrop.html" %}
+<div class="auth-wrap">
+  <div class="auth-card auth-card--glass">
+    <h1>Welcome back</h1>
+    <p class="subtitle">Sign in to access your encrypted documents.</p>
+    {% if auth_error %}
+      <div class="field-error">{{ auth_error }}</div>
+    {% endif %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="flash">
+          {% for cat, msg in messages %}
+            <li class="{{ cat }}">{{ msg }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    <form method="post" novalidate class="form-stack">
+      {{ form.hidden_tag() }}
+      <div class="field">
+        {{ form.username.label }}
+        {{ form.username(class_="input", autocomplete="username", placeholder="Your username") }}
+      </div>
+      <div class="field">
+        {{ form.password.label }}
+        <div class="input-with-toggle">
+          {{ form.password(class_="input", id="login-password", autocomplete="current-password", placeholder="••••••••") }}
+          {{ ui.password_toggle_button("login-password", "toggle-login-pw") }}
+        </div>
+      </div>
+      <div class="form-actions">
+        {{ form.submit(class_="btn btn-primary") }}
+      </div>
+    </form>
+    <p class="auth-footer">New here? <a href="{{ url_for('auth.register') }}">Create an account</a></p>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/password-toggle.js') }}" defer></script>
+{% endblock %}

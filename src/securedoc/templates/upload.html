@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Upload — SecureDoc{% endblock %}
+{% block body_class %}page-backdrop{% endblock %}
+{% block main_class %}main--backdrop main--backdrop-start{% endblock %}
+{% block content %}
+{% include "partials/blur_backdrop.html" %}
+<div class="backdrop-flow">
+  <div class="page-header">
+    <h1>Upload document</h1>
+    <p class="lede">Files are encrypted on the server before being stored on disk.</p>
+  </div>
+
+  <section class="card card--sheet">
+    <h2>File & title</h2>
+    <form method="post" enctype="multipart/form-data" novalidate class="form-stack">
+      {{ form.hidden_tag() }}
+      <div class="field">
+        {{ form.title.label }}
+        {{ form.title(class_="input", placeholder="e.g. Quarterly report") }}
+      </div>
+      <div class="field">
+        {{ form.file.label }}
+        {{ form.file(class_="input") }}
+      </div>
+      <div class="form-actions">
+        {{ form.submit(class_="btn btn-primary") }}
+      </div>
+    </form>
+  </section>
+
+  <div class="page-footer-nav">
+    <a class="nav-link" href="{{ url_for('main.dashboard') }}">← Back to dashboard</a>
+  </div>
+</div>
+{% endblock %}

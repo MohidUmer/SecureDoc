@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block title %}{{ doc.title }} — SecureDoc{% endblock %}
+{% block content %}
+<div class="doc-hero">
+  <h1>{{ doc.title }}</h1>
+  <div class="meta-row">
+    <span class="pill">Owner #{{ doc.owner_id }}</span>
+    <span class="pill pill-accent">{{ doc.mime_type }}</span>
+    <span class="pill">{{ doc.size_bytes }} bytes</span>
+  </div>
+  {% if can_download %}
+  <div class="actions-row">
+    <a class="btn btn-primary btn-sm" href="{{ url_for('documents.download', document_id=doc.id) }}">Download decrypted</a>
+  </div>
+  {% endif %}
+</div>
+
+{% if can_share %}
+<section class="card">
+  <h2>Share with a user</h2>
+  <form method="post" action="{{ url_for('documents.add_share', document_id=doc.id) }}" class="form-stack">
+    {{ share_form.hidden_tag() }}
+    <div class="inline-form-row">
+      <div class="field">
+        {{ share_form.grantee_username.label }}
+        {{ share_form.grantee_username(class_="input") }}
+      </div>
+      <div class="field" style="flex: 0 1 200px;">
+        {{ share_form.role.label }}
+        {{ share_form.role(class_="input") }}
+      </div>
+    </div>
+    <div class="form-actions">
+      {{ share_form.submit(class_="btn btn-secondary btn-sm") }}
+    </div>
+  </form>
+</section>
+{% endif %}
+
+{% if can_edit %}
+<section class="card">
+  <h2>New version</h2>
+  <form method="post" action="{{ url_for('documents.new_version', document_id=doc.id) }}" enctype="multipart/form-data" class="form-stack">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    <div class="field">
+      <label for="version-file">Replace with a new file</label>
+      <input class="input" id="version-file" type="file" name="file" required>
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary btn-sm">Upload new version</button>
+    </div>
+  </form>
+</section>
+{% endif %}
+
+{% if can_delete %}
+<section class="card card-muted">
+  <h2>Danger zone</h2>
+  <p class="empty-hint" style="margin-top:0;">This removes the document, all versions, shares, and comments. Files on disk are deleted.</p>
+  <form method="post" action="{{ url_for('documents.delete_document', document_id=doc.id) }}" onsubmit="return confirm('Delete this document permanently?');" class="danger-zone">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    <button type="submit" class="btn btn-danger btn-sm">Delete document</button>
+  </form>
+</section>
+{% endif %}
+
+<section class="card">
+  <h2>Version history</h2>
+  {% if versions %}
+  <ul class="version-list">
+    {% for v in versions %}
+    <li><strong>v{{ v.version_number }}</strong> — {{ v.mime_type }} — {{ v.size_bytes }} B — uploaded by user {{ v.created_by_id }}</li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p class="empty-hint">No versions recorded.</p>
+  {% endif %}
+</section>
+
+{% if can_comment %}
+<section class="card">
+  <h2>Add a comment</h2>
+  <form method="post" action="{{ url_for('documents.add_comment', document_id=doc.id) }}" class="form-stack">
+    {{ comment_form.hidden_tag() }}
+    <div class="field">
+      {{ comment_form.body.label }}
+      {{ comment_form.body(class_="input textarea", rows=4) }}
+    </div>
+    <div class="form-actions">
+      {{ comment_form.submit(class_="btn btn-primary btn-sm") }}
+    </div>
+  </form>
+</section>
+{% endif %}
+
+<section class="card card-muted">
+  <h2>Discussion</h2>
+  {% if comments %}
+  <ul class="comments">
+    {% for c in comments %}
+    <li>
+      <div class="who"><strong>{{ c.author.username }}</strong> · {{ c.created_at }}</div>
+      <div>{{ c.body | e }}</div>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p class="empty-hint">No comments yet.</p>
+  {% endif %}
+</section>
+
+<div class="page-footer-nav">
+  <a class="nav-link" href="{{ url_for('main.dashboard') }}">← Back to dashboard</a>
+</div>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Audit log — SecureDoc{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>Security audit log</h1>
+  <p class="lede">Recent events (authentication, documents, sharing). Admin only.</p>
+</div>
+
+<section class="card">
+  <div class="table-wrap">
+    <table class="audit">
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th>Type</th>
+          <th>User</th>
+          <th>Message</th>
+          <th>IP</th>
+          <th>Extra</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in rows %}
+        <tr>
+          <td>{{ r.created_at }}</td>
+          <td><span class="pill" style="font-size:0.65rem;">{{ r.event_type }}</span></td>
+          <td>{{ r.user_id or '—' }}</td>
+          <td>{{ r.message | e }}</td>
+          <td>{{ r.ip_address or '—' }}</td>
+          <td>{{ (r.extra or '') | e }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% if not rows %}
+  <p class="empty-hint" style="margin:1rem 0 0;">No audit entries yet.</p>
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% import "macros/ui.html" as ui %}
+{% block title %}Register — SecureDoc{% endblock %}
+{% block body_class %}page-backdrop{% endblock %}
+{% block main_class %}main--backdrop main--backdrop-center{% endblock %}
+{% block flash_messages %}{% endblock %}
+{% block content %}
+{% include "partials/blur_backdrop.html" %}
+<div class="auth-wrap">
+  <div class="auth-card auth-card--glass">
+    <h1>Create account</h1>
+    <p class="subtitle">Choose a username, email, and a strong password (8+ characters).</p>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="flash">
+          {% for cat, msg in messages %}
+            <li class="{{ cat }}">{{ msg }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    <form method="post" novalidate class="form-stack">
+      {{ form.hidden_tag() }}
+      <div class="field">
+        {{ form.username.label }}
+        {{ form.username(class_="input", autocomplete="username", placeholder="Choose a username") }}
+      </div>
+      <div class="field">
+        {{ form.email.label }}
+        {{ form.email(class_="input", autocomplete="email", placeholder="you@example.com") }}
+      </div>
+      <div class="field">
+        {{ form.password.label }}
+        <div class="input-with-toggle">
+          {{ form.password(class_="input", id="register-password", autocomplete="new-password", placeholder="At least 8 characters") }}
+          {{ ui.password_toggle_button("register-password", "toggle-register-pw") }}
+        </div>
+      </div>
+      <div class="form-actions">
+        {{ form.submit(class_="btn btn-primary") }}
+      </div>
+    </form>
+    <p class="auth-footer">Already registered? <a href="{{ url_for('auth.login') }}">Sign in</a></p>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/password-toggle.js') }}" defer></script>
+{% endblock %}

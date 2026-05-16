@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %}SecureDoc — Encrypted document sharing{% endblock %}
+{% block main_class %}container--landing{% endblock %}
+
+{% block content %}
+<div class="landing">
+
+  <!-- Hero -->
+  <section class="landing-hero">
+    <div class="landing-hero__copy">
+      <p class="landing-kicker">Secure collaboration</p>
+      <h1 class="landing-hero__title">Store, share, and discuss documents — encrypted at rest.</h1>
+      <p class="landing-hero__lede">
+        SecureDoc is a prototype for <strong>authenticated access</strong>, <strong>role-based sharing</strong>
+        (view, comment, edit), <strong>version history</strong>, and an <strong>admin audit trail</strong>.
+        File payloads are encrypted on the server before they are written to disk.
+      </p>
+      <div class="landing-hero__cta">
+        <a class="btn btn-primary" href="{{ url_for('auth.register') }}">Create free account</a>
+        <a class="btn btn-secondary" href="{{ url_for('auth.login') }}">Sign in</a>
+      </div>
+    </div>
+    <div class="landing-hero__visual">
+      <img
+        src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&amp;fit=crop&amp;w=1200&amp;q=80"
+        alt="Organized documents and planning workspace"
+        width="600" height="400" loading="eager" fetchpriority="high" class="landing-hero__img"
+      >
+    </div>
+  </section>
+
+  <!-- Features (clickable — each links to register) -->
+  <section class="landing-section">
+    <h2 class="landing-section__title">What you can do</h2>
+    <p class="landing-section__subtitle">Designed around common secure-document workflows.</p>
+
+    <div class="landing-features">
+      <a href="{{ url_for('auth.register') }}" class="feature-card">
+        <div class="feature-card__media">
+          <img
+            src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&amp;fit=crop&amp;w=900&amp;q=80"
+            alt="Code on a screen" width="400" height="260" loading="lazy" class="feature-card__img"
+          >
+        </div>
+        <h3 class="feature-card__title">Encryption at rest</h3>
+        <p class="feature-card__text">
+          Uploads are protected with a server-side Fernet key. Ciphertext lives under a dedicated folder;
+          the database stores metadata and access rules — not your file contents.
+        </p>
+        <span class="feature-card__arrow">Get started &rarr;</span>
+      </a>
+
+      <a href="{{ url_for('auth.register') }}" class="feature-card">
+        <div class="feature-card__media">
+          <img
+            src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&amp;fit=crop&amp;w=900&amp;q=80"
+            alt="Team collaborating" width="400" height="260" loading="lazy" class="feature-card__img"
+          >
+        </div>
+        <h3 class="feature-card__title">Share with roles</h3>
+        <p class="feature-card__text">
+          Invite collaborators by username: <strong>view</strong> (read/download), <strong>comment</strong>,
+          or <strong>edit</strong> (including new versions). Only the owner can share or delete.
+        </p>
+        <span class="feature-card__arrow">Get started &rarr;</span>
+      </a>
+
+      <a href="{{ url_for('auth.register') }}" class="feature-card">
+        <div class="feature-card__media">
+          <img
+            src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&amp;fit=crop&amp;w=900&amp;q=80"
+            alt="Dashboard analytics" width="400" height="260" loading="lazy" class="feature-card__img"
+          >
+        </div>
+        <h3 class="feature-card__title">Audit &amp; accountability</h3>
+        <p class="feature-card__text">
+          Security-relevant actions are logged: sign-in outcomes, uploads, downloads, sharing
+          changes — without storing passwords or file bodies in the log.
+        </p>
+        <span class="feature-card__arrow">Get started &rarr;</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- CTA bottom -->
+  <section class="landing-cta card">
+    <h2 class="landing-cta__title">Ready to try SecureDoc?</h2>
+    <p class="landing-cta__text">Register a local account — your data stays on this machine.</p>
+    <div class="landing-hero__cta">
+      <a class="btn btn-primary" href="{{ url_for('auth.register') }}">Get started</a>
+      <a class="landing-cta__secondary nav-link" href="{{ url_for('auth.login') }}">I already have an account</a>
+    </div>
+  </section>
+
+  <p class="landing-attribution">
+    Photos from <a href="https://unsplash.com" rel="noopener noreferrer" target="_blank">Unsplash</a>
+    (<a href="https://unsplash.com/license" rel="noopener noreferrer" target="_blank">license</a>).
+  </p>
+</div>
+{% endblock %}
