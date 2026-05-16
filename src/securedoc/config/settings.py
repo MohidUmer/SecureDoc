@@ -20,9 +20,10 @@ class BaseConfig:
     PERMANENT_SESSION_LIFETIME = timedelta(
         minutes=int(os.getenv("SESSION_TIMEOUT_MINUTES", "30"))
     )
+    SESSION_COOKIE_SECURE = True
     SESSION_COOKIE_HTTPONLY = True
     SESSION_COOKIE_SAMESITE = "Lax"
-    SESSION_COOKIE_SECURE = os.getenv("FLASK_ENV") == "production"
+    WTF_CSRF_SSL_STRICT = False
     WTF_CSRF_TIME_LIMIT = None
     MAX_CONTENT_LENGTH = int(os.getenv("MAX_UPLOAD_MB", "25")) * 1024 * 1024
     ALLOWED_UPLOAD_EXTENSIONS = frozenset(
