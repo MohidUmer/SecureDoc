@@ -11,7 +11,7 @@ from datetime import timedelta
 
 
 class BaseConfig:
-    SECRET_KEY = os.getenv("SECRET_KEY", os.urandom(32).hex())
+    SECRET_KEY = os.getenv("SECRET_KEY", "securedoc-prototype-stable-key-123")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_DATABASE_URI = os.getenv(
         "DATABASE_URI",
