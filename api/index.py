@@ -13,4 +13,5 @@ if str(ROOT) not in sys.path:
 from securedoc import create_app
 
 # Force production mode on Vercel
+os.environ["FLASK_ENV"] = "production"
 app = create_app(config_name="production")
