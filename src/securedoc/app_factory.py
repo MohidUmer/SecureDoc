@@ -24,7 +24,10 @@ def create_app(config_name: str | None = None) -> Flask:
     config_class = CONFIG_MAP.get(cfg_name, CONFIG_MAP["development"])
 
     root = Path(__file__).resolve().parent.parent.parent
-    instance_path = root / "instance"
+    if os.getenv("VERCEL"):
+        instance_path = Path("/tmp/instance")
+    else:
+        instance_path = root / "instance"
     instance_path.mkdir(parents=True, exist_ok=True)
 
     app = Flask(
